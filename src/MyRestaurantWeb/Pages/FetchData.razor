@@ -7,7 +7,7 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null)
+@if (items == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -16,20 +16,16 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>Item Title</th>
+                <th>Price</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var item in items)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@item.Title</td>
+                    <td>@item.Price</td>
                 </tr>
             }
         </tbody>
@@ -37,21 +33,42 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private Item[]? items;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+            items = await Http.GetFromJsonAsync<Item[]>("https://localhost:7168/api/item");
     }
 
-    public class WeatherForecast
+    public class Item
     {
-        public DateTime Date { get; set; }
+        public int Id { get; set; }
 
-        public int TemperatureC { get; set; }
+        public string Title { get; set; }
 
-        public string? Summary { get; set; }
+        public int Quantity { get; set; }
 
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        public string Image { get; set; }
+
+        public double Price { get; set; }
+
+        public ItemCategory Category { get; set; }
+
+        public double SubTotal
+        {
+            get
+            {
+                return Price * Quantity;
+            }
+        }
+    }
+
+    public enum ItemCategory
+    {
+        Noodles = 1,
+        Rice = 2,
+        Appetizers = 3,
+        Desserts = 4,
+        Beverages = 5
     }
 }

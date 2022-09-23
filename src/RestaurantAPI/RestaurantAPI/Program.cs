@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RestaurantAPI.Data;
 using RestaurantAPI;
+using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<RestaurantAPIContext>(options =>
@@ -12,7 +13,14 @@ builder.Services.AddDbContext<RestaurantAPIContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors();
+
 var app = builder.Build();
+
+app.UseCors(policy => 
+    policy.AllowAnyOrigin()
+    .AllowAnyMethod()
+);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
