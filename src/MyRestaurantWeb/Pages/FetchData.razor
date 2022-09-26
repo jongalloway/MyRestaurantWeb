@@ -18,6 +18,7 @@ else
             <tr>
                 <th>Item Title</th>
                 <th>Price</th>
+                <th>Picture</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,7 @@ else
                 <tr>
                     <td>@item.Title</td>
                     <td>@item.Price</td>
+                    <td><img src='@("https://myrestaurantweb.blob.core.windows.net/menu/" + @item.Image)'></td>
                 </tr>
             }
         </tbody>
