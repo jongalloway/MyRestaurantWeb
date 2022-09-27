@@ -13,25 +13,23 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Item Title</th>
-                <th>Price</th>
-                <th>Picture</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in items)
-            {
-                <tr>
-                    <td>@item.Title</td>
-                    <td>@item.Price</td>
-                    <td><img src='@("https://myrestaurantweb.blob.core.windows.net/menu/" + @item.Image)'></td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var item in items)
+        {
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <img src='@("https://myrestaurantweb.blob.core.windows.net/menu/" + @item.Image)' class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">@item.Price</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+
 }
 
 @code {
@@ -39,7 +37,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-            items = await Http.GetFromJsonAsync<Item[]>("https://localhost:7168/api/item");
+        items = await Http.GetFromJsonAsync<Item[]>("https://localhost:7168/api/item");
     }
 
     public class Item
